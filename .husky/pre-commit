@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "📝 Checking types, linting, and formatting before committing..."
+pnpm lint-staged ||
+(
+  echo "❌ Failed. Lint, add changes, and try committing again";
+  false;
+)
