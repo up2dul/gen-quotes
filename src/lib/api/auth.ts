@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-import type { LoginResponse } from '~/lib/types';
+import type { LoginResponse, UserResponse } from '~/lib/types';
 import { getToken } from '~/lib/utils';
 
 const prefixUrl = 'https://dummyjson.com/auth';
@@ -25,7 +25,7 @@ export async function login({
   return json;
 }
 
-export async function getMe() {
-  const json = await api.get('me').json();
+export async function getUser() {
+  const json = await api.get('me').json<UserResponse>();
   return json;
 }
