@@ -2,12 +2,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { login } from '~/lib/api/auth';
-import { setToken } from '~/lib/utils';
+import { setToken, setUserData } from '~/lib/utils';
+import { useLoginStore } from './login';
 
 type AuthStore = {
   isLoggedIn: boolean;
-  isLoginLoading: boolean;
-  loginError: string | null;
   login: ({
     username,
     password,
@@ -22,15 +21,23 @@ export const useAuthStore = create(
       isLoginLoading: false,
       loginError: null,
       login: async ({ username, password }) => {
+        const { setIsLoginLoading, setLoginError } = useLoginStore.getState();
+
+        setIsLoginLoading(true);
         try {
-          const { token } = await login({ username, password });
+          const { token, ...userData } = await login({ username, password });
           if (token) {
             setToken(token);
-            set({ isLoggedIn: true });
+            setUserData(userData);
+            setLoginError(null);
+            set({
+              isLoggedIn: true,
+            });
           }
         } catch (error) {
-          if (error instanceof Error) set({ loginError: error.message });
+          if (error instanceof Error) setLoginError(error.message);
         }
+        setIsLoginLoading(false);
       },
       logout: () => {
         set({ isLoggedIn: false });

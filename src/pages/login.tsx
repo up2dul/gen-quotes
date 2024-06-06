@@ -12,10 +12,11 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { useAuthStore } from '~/store/auth';
+import { useAuthStore, useLoginStore } from '~/store';
 
 export default function Login() {
-  const auth = useAuthStore();
+  const { login } = useAuthStore();
+  const { isLoginLoading, loginError } = useLoginStore();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export default function Login() {
     const username = (formData.get('username') as string) ?? '';
     const password = (formData.get('password') as string) ?? '';
 
-    auth.login({ username, password });
+    login({ username, password });
   };
 
   return (
@@ -61,22 +62,18 @@ export default function Login() {
           </CardContent>
 
           <CardFooter>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={auth.isLoginLoading}
-            >
-              {auth.isLoginLoading ? 'Loading...' : 'Login'}
+            <Button type="submit" className="w-full" disabled={isLoginLoading}>
+              {isLoginLoading ? 'Loading...' : 'Login'}
             </Button>
           </CardFooter>
         </form>
       </Card>
 
-      {Boolean(auth.loginError) && (
+      {Boolean(loginError) && (
         <Alert variant="destructive" className="mt-4">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{auth.loginError}</AlertDescription>
+          <AlertDescription>{loginError}</AlertDescription>
         </Alert>
       )}
     </section>
