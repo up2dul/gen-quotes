@@ -12,10 +12,10 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { useAuth } from '~/hooks/useAuth';
+import { useAuthStore } from '~/store/auth';
 
 export default function Login() {
-  const auth = useAuth();
+  const auth = useAuthStore();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,18 +61,22 @@ export default function Login() {
           </CardContent>
 
           <CardFooter>
-            <Button type="submit" className="w-full" disabled={auth.isLoading}>
-              {auth.isLoading ? 'Loading...' : 'Login'}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={auth.isLoginLoading}
+            >
+              {auth.isLoginLoading ? 'Loading...' : 'Login'}
             </Button>
           </CardFooter>
         </form>
       </Card>
 
-      {Boolean(auth.error) && (
+      {Boolean(auth.loginError) && (
         <Alert variant="destructive" className="mt-4">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{auth.error}</AlertDescription>
+          <AlertDescription>{auth.loginError}</AlertDescription>
         </Alert>
       )}
     </section>

@@ -1,7 +1,7 @@
 import ky from 'ky';
 
-import type { LoginResponse, MeResponse } from '~/lib/types';
-import { getToken, setToken } from '~/lib/utils';
+import type { LoginResponse, UserResponse } from '~/lib/types';
+import { getToken } from '~/lib/utils';
 
 const prefixUrl = 'https://dummyjson.com/auth';
 const api = ky.create({
@@ -22,12 +22,10 @@ export async function login({
   const json = await api
     .post('login', { json: { username, password } })
     .json<LoginResponse>();
-  setToken(json.token);
-
   return json;
 }
 
-export async function getMe() {
-  const json = await api.get('me').json<MeResponse>();
+export async function getUser() {
+  const json = await api.get('me').json<UserResponse>();
   return json;
 }

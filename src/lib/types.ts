@@ -1,4 +1,4 @@
-export type MeResponse = {
+export type UserResponse = {
   id: number;
   username: string;
   email: string;
@@ -8,6 +8,6 @@ export type MeResponse = {
   image: string;
 };
 
-export type LoginResponse = MeResponse & {
+export type LoginResponse = UserResponse & {
   token: string;
 };
