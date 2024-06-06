@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Navigate, type Path } from '~/router';
 import { useAuthStore } from '~/store/auth';
 
-const PRIVATE: Path[] = ['/home', '/settings'];
+const PRIVATE: Path[] = ['/home'];
 const PUBLIC: Path[] = ['/login'];
 
 export const Redirects = ({ children }: { children: React.ReactNode }) => {
