@@ -17,3 +17,7 @@ export function getToken() {
 export function setUserData(data: UserResponse) {
   localStorage.setItem('userData', JSON.stringify(data));
 }
+
+export function getUserData() {
+  return JSON.parse(localStorage.getItem('userData') || '{}') as UserResponse;
+}
