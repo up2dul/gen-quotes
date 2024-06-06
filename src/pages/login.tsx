@@ -31,7 +31,7 @@ export default function Login() {
     <section className="mt-32 mx-auto max-w-sm">
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">📪 LihatOngkir - Login</CardTitle>
+          <CardTitle className="text-2xl">💬 GenQuotes - Login</CardTitle>
           <CardDescription>
             Please enter your username and password to login.
           </CardDescription>
