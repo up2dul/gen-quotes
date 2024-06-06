@@ -1,27 +1,27 @@
-import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
 import { getMe, login } from '~/lib/api/auth';
-import { getToken } from '~/lib/utils';
 
 export function useAuth() {
-  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    handleGetMe();
+    (async () => {
+      await handleGetMe();
+    })();
   }, []);
 
   const handleGetMe = async () => {
     try {
-      if (getToken()) {
-        await getMe();
-        setIsAuthenticated(true);
-      }
+      await getMe();
+      setIsAuthenticated(true);
+      setIsAuthLoading(false);
     } catch (error) {
       setIsAuthenticated(false);
+      setIsAuthLoading(false);
     }
   };
 
@@ -36,7 +36,7 @@ export function useAuth() {
       await login({ username, password });
       setIsAuthenticated(true);
       setIsLoading(false);
-      navigate({ to: '/' });
+      window.location.reload();
     } catch (error) {
       setIsLoading(false);
       if (error instanceof Error) {
@@ -51,6 +51,7 @@ export function useAuth() {
   return {
     login: handleLogin,
     isAuthenticated,
+    isAuthLoading,
     isLoading,
     error,
   };
