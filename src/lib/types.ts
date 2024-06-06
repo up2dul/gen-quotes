@@ -11,3 +11,9 @@ export type UserResponse = {
 export type LoginResponse = UserResponse & {
   token: string;
 };
+
+export type QuoteResponse = {
+  id: number;
+  quote: string;
+  author: string;
+};
