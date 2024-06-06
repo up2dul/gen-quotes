@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Navigate, type Path } from '~/router';
@@ -8,7 +9,11 @@ const PUBLIC: Path[] = ['/login'];
 
 export const Redirects = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, validateLogin } = useAuthStore();
+
+  useEffect(() => {
+    validateLogin();
+  }, [validateLogin]);
 
   const isPathIndex = pathname === '/';
 

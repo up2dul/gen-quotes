@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { login } from '~/lib/api/auth';
+import { getUser, login } from '~/lib/api/auth';
 import { setToken, setUserData } from '~/lib/utils';
 import { useLoginStore } from './login';
 
@@ -12,11 +12,12 @@ type AuthStore = {
     password,
   }: { username: string; password: string }) => void;
   logout: () => void;
+  validateLogin: () => void;
 };
 
 export const useAuthStore = create(
   persist<AuthStore>(
-    set => ({
+    (set, get) => ({
       isLoggedIn: false,
       isLoginLoading: false,
       loginError: null,
@@ -44,6 +45,18 @@ export const useAuthStore = create(
         localStorage.clear();
         localStorage.removeItem('token');
         localStorage.removeItem('userData');
+      },
+      validateLogin: async () => {
+        try {
+          const user = await getUser();
+          if (user) {
+            set({
+              isLoggedIn: true,
+            });
+          }
+        } catch (error) {
+          get().logout();
+        }
       },
     }),
     {
